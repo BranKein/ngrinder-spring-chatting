@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  controller:
+    image: ngrinder/controller:latest
+    ports:
+      - "80:80"
+      - "16001:16001"
+      - "12000-12009:12000-12009"
+    networks:
+      - ngrinder-test-net
+    environment:
+      - TZ=Asia/Seoul
+    volumes:
+      - ~/ngrinder-controller:/opt/ngrinder-controller
+
+  agent:
+    image: ngrinder/agent:latest
+    links:
+      - "controller:controller"
+    networks:
+      - ngrinder-test-net
+    environment:
+      - TZ=Asia/Seoul
+    depends_on:
+      - controller
+    deploy:
+      mode: replicated
+      replicas: 3
+
+# port 9001
+  simple-server:
+    image: simple-server:latest
+    networks:
+      - ngrinder-test-net
+    environment:
+      - TZ=Asia/Seoul
+
+# port 9000
+  simple-graalvm-server:
+    image: simple-graalvm-server:latest
+    networks:
+      - ngrinder-test-net
+    environment:
+      - TZ=Asia/Seoul
+
+networks:
+  ngrinder-test-net:
+    driver: bridge
