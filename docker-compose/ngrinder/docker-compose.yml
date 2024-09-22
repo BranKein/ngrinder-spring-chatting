@@ -8,7 +8,8 @@ services:
       - "16001:16001"
       - "12000-12009:12000-12009"
     networks:
-      - ngrinder-test-net
+      ngrinder-test-net:
+        ipv4_address: 172.240.0.1
     environment:
       - TZ=Asia/Seoul
     volumes:
@@ -20,6 +21,8 @@ services:
       - "controller:controller"
     networks:
       - ngrinder-test-net
+    volumes:
+      - ./agent_conf:/opt/ngrinder-agent/.ngrinder-agent/agent.conf
     environment:
       - TZ=Asia/Seoul
     depends_on:
@@ -32,7 +35,8 @@ services:
   simple-server:
     image: simple-server:latest
     networks:
-      - ngrinder-test-net
+      ngrinder-test-net:
+        ipv4_address: 172.240.0.11
     environment:
       - TZ=Asia/Seoul
 
@@ -40,10 +44,16 @@ services:
   simple-graalvm-server:
     image: simple-graalvm-server:latest
     networks:
-      - ngrinder-test-net
+      ngrinder-test-net:
+        ipv4_address: 172.240.0.10
     environment:
       - TZ=Asia/Seoul
 
 networks:
   ngrinder-test-net:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.240.0.0/16
+          ip_range: 172.240.1.0/24
