@@ -49,6 +49,25 @@ services:
     environment:
       - TZ=Asia/Seoul
 
+  # port 9002
+  simple-reactive-server:
+    image: simple-reactive-server:latest
+    networks:
+      ngrinder-test-net:
+        ipv4_address: 172.240.0.20
+    environment:
+      - TZ=Asia/Seoul
+
+  # port 9003
+  simple-reactive-graalvm-server:
+    image: simple-reactive-graalvm-server:latest
+    networks:
+      ngrinder-test-net:
+        ipv4_address: 172.240.0.21
+    environment:
+      - TZ=Asia/Seoul
+
+
 networks:
   ngrinder-test-net:
     driver: bridge
