@@ -2,9 +2,9 @@ version: '3'
 
 services:
   controller:
-    image: ngrinder/controller:latest
+    image: ngrinder/controller:arm
     ports:
-      - "80:80"
+      - "8080:8080"
       - "16001:16001"
       - "12000-12009:12000-12009"
     networks:
@@ -16,7 +16,7 @@ services:
       - ~/ngrinder-controller:/opt/ngrinder-controller
 
   agent:
-    image: ngrinder/agent:latest
+    image: ngrinder/agent:arm
     links:
       - "controller:controller"
     networks:
